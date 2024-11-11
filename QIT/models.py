@@ -163,7 +163,7 @@ class QitVisitormaster(models.Model):
     vname = models.CharField(db_column='VName', max_length=45,null=False,blank=False)  # Field name made lowercase.
     phone1 = models.CharField(db_column='Phone1', unique=True, max_length=45, blank=True, null=True)  # Field name made lowercase.
     vcmpname = models.CharField(db_column='VCmpName', max_length=45,null=False,blank=False)  # Field name made lowercase.
-    vlocation = models.TextField(db_column='VLocation')
+    vlocation = models.CharField(db_column='VLocation', max_length=45,null=False,blank=False)  # Field name made lowercase.
     e_mail = models.CharField(db_column='E_Mail', unique=True, max_length=45,null=False,blank=False)  # Field name made lowercase.
     cmptransid = models.OneToOneField(QitCompany, models.DO_NOTHING, db_column='CmpTransId')  # Field name made lowercase.
 

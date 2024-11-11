@@ -148,11 +148,14 @@ class QitVisitorSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         queryset = QitVisitorinout.objects.filter(visitortansid=representation['transid']).order_by("-entrydate").first()
         today = now().date()
+        print(today)
+        print(queryset.timeslot)
         # isToday = queryset.entrydate != today) ? "n" : "y"
         # visitormaster = instance.transid
         representation['checkinstatus'] = queryset.checkinstatus
         representation['status'] = queryset.status
-        representation['isToday'] = "N" if queryset.timeslot != today else "Y"
+        representation['isToday'] = "N" if queryset.timeslot.date() != today else "Y"
+        # representation['isToday'] = "N" if queryset.entrydate != today else "Y"
         # representation['vName'] = visitormaster.vname
         # representation['visitor_phone1'] = visitormaster.phone1
         # representation['visitor_cmpname'] = visitormaster.vcmpname
@@ -237,7 +240,7 @@ class QitVisitorinoutPOSTSerializer(serializers.ModelSerializer):
 class QitVisitorinoutGETSerializer(serializers.ModelSerializer):
     class Meta:
         model = QitVisitorinout
-        fields = ['transid','cnctperson','cmpdepartmentid','timeslot','purposeofvisit','anyhardware','vavatar','checkinstatus','reason','status','entrydate','createdby','checkintime']
+        fields = ['transid','cnctperson','cmpdepartmentid','timeslot','purposeofvisit','anyhardware','vavatar','checkinstatus','reason','status','entrydate','createdby','checkintime','checkouttime']
 
       
     def to_representation(self, instance):
@@ -280,6 +283,7 @@ class QitVisitorinoutGETSerializer(serializers.ModelSerializer):
             'C': 'Canceled'
         }
         representation['state'] = status_mapping.get(state, None)
+
         state_mapping = {
             'I': 'Check in',
             'O': 'Check Out'
@@ -294,6 +298,8 @@ class QitVisitorinoutGETSerializer(serializers.ModelSerializer):
         entryDate = representation.pop('entrydate')
         checkinDate = representation.pop('checkintime')
         representation['sortDate'] = checkinDate if checkinDate else entryDate
+        representation['checkintime'] = checkinDate 
+        representation['checkouttime'] = representation.pop("checkouttime") 
         # representation['vCmptransid'] = visitormaster.cmptransid_id
  
         return representation

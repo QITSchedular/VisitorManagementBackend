@@ -514,6 +514,7 @@ def checkoutVisitor(request):
 
         
         inOutEntry = QitVisitorinout.objects.filter(visitortansid=visitor_entry.transid).order_by("-entrydate").first()
+        print(inOutEntry)
         if not inOutEntry:
             return Response({'Status': 400, 'StatusMsg': "Visitor checkin entry not found",'APICode':APICodeClass.Visitor_Mobile_ChkOutByV.value}, status=400)
         

@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-)zu$!@y1z%%je9k-&ut*t%)*#x6amm$ya7!@*andh=-7p*tit-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["aawjo.vercel.app","3.91.245.60","192.168.1.98","192.168.1.69","192.168.1.68","8037qq7p-8000.inc1.devtunnels.ms","127.0.0.1","*"]
+ALLOWED_HOSTS = ["aawjo.vercel.app","192.168.1.98","192.168.1.69","192.168.1.68","8037qq7p-8000.inc1.devtunnels.ms","127.0.0.1","*"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
@@ -129,6 +129,17 @@ REST_FRAMEWORK = {
 #         'PORT': '3306',       # Change this to your MySQL server's port
 #     }
 # }
+# pymysql.install_as_MySQLdb()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'QIT_VMS',
+#         'USER': 'admin',
+#         'PASSWORD': 'wBoymevujY3TZpcIxNEl',
+#         'HOST': 'visitormgmtdb.cd6aqkmesvl7.ap-south-1.rds.amazonaws.com',  # Change this to your MySQL server's hostname or IP address
+#         'PORT': '3306',       # Change this to your MySQL server's port
+#     }
+# }
 pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
@@ -214,7 +225,9 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'update-checkin-status-every-hour': {
         'task': 'QIT.tasks.update_checkin_status',
-        'schedule': crontab(hour=12, minute=30),
+        # 'schedule': crontab(hour=12, minute=30),
+        # 'schedule': crontab(minute=0),
+        'schedule': crontab(minute='*/1'),
     },
     'send_notification_reminder': {
         'task': 'QIT.tasks.reminder_notification',

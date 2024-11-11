@@ -479,7 +479,7 @@ def login_view(request):
                         "APICode":APICodeClass.Auth_LogIn.value
                     }, status=status.HTTP_404_NOT_FOUND)
 
-                obj = QitAuthenticationrule.objects.filter(user_id=chkUser.transid,cmptransid=cmpId).first()
+                obj = QitAuthenticationrule.objects.filter(user_id=chkUser.transid,cmptransid=cmpId,userrole=user.userrole).first()
                 
                 # obj = QitAuthenticationrule.objects.all()
                 # obj_list = list(obj.values())
@@ -864,6 +864,7 @@ def getWebsocketTest(request):
     message = "Hello"  # Message to be sent
 
     channel_layer = get_channel_layer()
+    # uncomment this
     for user_id in user_ids:       
         async_to_sync(channel_layer.group_send)(
             f"user_{user_id}",
@@ -904,6 +905,7 @@ def send_notification(notifications,cmptransid):
             'n_date_time': n_date_time,
             'chk_status': notification.chk_status,
         }
+        # uncomment this
         async_to_sync(channel_layer.group_send)(
             f"user_{notification.receiver_user_id}_cmp{cmptransid}",
             {
@@ -922,6 +924,7 @@ def send_sa_notification(notifications,cmptransid):
             'n_date_time': n_date_time,
             'chk_status': notification.chk_status,
         }
+        # uncomment this
         async_to_sync(channel_layer.group_send)(
             f"sa_{notification.receiver_ma_id}_cmp{cmptransid}",
             {
@@ -947,6 +950,7 @@ def send_visitors(visitor,cmptransid,type):
             'reason': visitor.reason,
             'checkinstatus':state_mapping.get(visitor.checkinstatus, None)
         }
+        # uncomment this
         for user_id in user_ids:
             if user_id is not None:
                 async_to_sync(channel_layer.group_send)(
@@ -957,6 +961,8 @@ def send_visitors(visitor,cmptransid,type):
                     }
                 )
     if type == "add":
+        print()
+        # uncomment this
         for user_id in user_ids:
             if user_id is not None:
                 async_to_sync(channel_layer.group_send)(

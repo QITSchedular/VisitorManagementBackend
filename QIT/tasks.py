@@ -12,9 +12,31 @@ import pytz
 from QIT.Views.common import send_visitors
 from QIT.Views.visitor_master import send_email_notification_Verification
 
+# @shared_task
+# def update_checkin_status():
+#     now = timezone.now()
+#     # eight_hours_ago = now - timedelta(hours=8)
+#     eight_hours_ago = now - timedelta(minutes=8)
+#     visitors_to_update = QitVisitorinout.objects.filter(
+#         entrydate__lt=eight_hours_ago,
+#         status='A',
+#         checkinstatus='I'
+#     )
+#     print(visitors_to_update)
+#     if visitors_to_update.exists():
+#         visitors_to_update.update(checkinstatus='O',checkouttime=now)
+#     else:
+#         print("No visitors found matching the update criteria.")
+
+from celery.utils.log import get_task_logger
+logger = get_task_logger(__name__)
+
 @shared_task
 def update_checkin_status():
+    logger.info("update_checkin_status task started.")
+    print("========================================================")
     now = timezone.now()
+    # eight_hours_ago = now - timedelta(minutes=1)
     eight_hours_ago = now - timedelta(hours=8)
     visitors_to_update = QitVisitorinout.objects.filter(
         entrydate__lt=eight_hours_ago,
@@ -22,9 +44,11 @@ def update_checkin_status():
         checkinstatus='I'
     )
     if visitors_to_update.exists():
-        visitors_to_update.update(checkinstatus='O')
+        visitors_to_update.update(checkinstatus='O', checkouttime=datetime.now())
+        logger.info(f"{visitors_to_update.count()} visitors updated to check-out.")
     else:
-        print("No visitors found matching the update criteria.")
+        logger.info("No visitors found matching the update criteria.")
+
 
 @shared_task
 def reminder_notification():
