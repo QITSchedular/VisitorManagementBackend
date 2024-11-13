@@ -225,9 +225,9 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'update-checkin-status-every-hour': {
         'task': 'QIT.tasks.update_checkin_status',
-        # 'schedule': crontab(hour=12, minute=30),
+        'schedule': crontab(hour=12, minute=30),
         # 'schedule': crontab(minute=0),
-        'schedule': crontab(minute='*/1'),
+        # 'schedule': crontab(minute='*/1'),
     },
     'send_notification_reminder': {
         'task': 'QIT.tasks.reminder_notification',

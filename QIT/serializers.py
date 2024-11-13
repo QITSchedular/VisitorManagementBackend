@@ -4,7 +4,7 @@ from django.utils.timezone import now
 import pytz
 from dateutil import parser
 from django.utils import timezone
-from .models import QitCompany,QitOtp,QitUserlogin,QitDepartment,QitUsermaster,QitVisitormaster,QitVisitorinout,QitApiLog,QitConfigmaster,QitMaNotification, QitMasteradmin
+from .models import QitCompany,QitOtp,QitUserlogin,QitDepartment,QitUsermaster,QitVisitormaster,QitVisitorinout,QitApiLog,QitConfigmaster,QitMaNotification, QitMasteradmin, QitLocation
 
 class CompanyMasterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,6 +54,11 @@ class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = QitDepartment
         fields = ['transid','deptname','cmptransid']
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QitLocation
+        fields = ['transid','locationname','cmptransid']
 
         
 class QitUsermasterSerializer(serializers.ModelSerializer):
@@ -342,7 +347,7 @@ class UserShortDataSerializer(serializers.ModelSerializer):
 class GetConfigDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = QitConfigmaster
-        fields = ['transid','approvalduration','manualverification','messagetype']
+        fields = ['transid','approvalduration','manualverification','messagetype','hostname','hostpasscode']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -359,4 +364,8 @@ class MAProfileSerializer(serializers.ModelSerializer):
         model = QitMasteradmin
         fields = ['transid','e_mail', 'bname', 'blocation','city','state','country','zipcode','address1','address2','phone1','phone2','entrydate','websitelink','cmplogo']
 
- 
+
+class GetConfigHostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QitConfigmaster
+        fields = ['hostname', 'hostpasscode']

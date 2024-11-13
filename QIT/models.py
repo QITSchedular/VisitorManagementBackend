@@ -171,7 +171,6 @@ class QitVisitormaster(models.Model):
         managed = False
         db_table = 'QIT_VisitorMaster'
 
-
 class QitNotificationmaster(models.Model):
     transid = models.AutoField(db_column='TransId', primary_key=True)  # Field name made lowercase.
     sender_user_id = models.IntegerField(db_column='Sender_User_Id',blank=True,null=True)  # Field name made lowercase.
@@ -185,16 +184,29 @@ class QitNotificationmaster(models.Model):
         managed = False
         db_table = 'QIT_NotificationMaster'
 
+# class QitConfigmaster(models.Model):
+#     transid = models.AutoField(db_column='TransId', primary_key=True)  # Field name made lowercase.
+#     cmptransid = models.ForeignKey(QitCompany, models.DO_NOTHING, db_column='CmpTransId')  # Field name made lowercase.
+#     approvalduration = models.CharField(db_column='ApprovalDuration', max_length=5)  # Field name made lowercase.
+#     manualverification = models.CharField(db_column='ManualVerification', max_length=2)  # Field name made lowercase.
+#     messagetype = models.CharField(db_column='MessageType', max_length=2)  # Field name made lowercase.
+
+#     class Meta:
+#         managed = False
+#         db_table = 'QIT_ConfigMaster'      
+
 class QitConfigmaster(models.Model):
     transid = models.AutoField(db_column='TransId', primary_key=True)  # Field name made lowercase.
     cmptransid = models.ForeignKey(QitCompany, models.DO_NOTHING, db_column='CmpTransId')  # Field name made lowercase.
     approvalduration = models.CharField(db_column='ApprovalDuration', max_length=5)  # Field name made lowercase.
     manualverification = models.CharField(db_column='ManualVerification', max_length=2)  # Field name made lowercase.
     messagetype = models.CharField(db_column='MessageType', max_length=2)  # Field name made lowercase.
+    hostname = models.CharField(db_column='HostName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    hostpasscode = models.CharField(db_column='HostPasscode', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'QIT_ConfigMaster'      
+        db_table = 'QIT_ConfigMaster'
 
 class QitMasteradmin(models.Model):
     transid = models.AutoField(db_column='TransId', primary_key=True)  # Field name made lowercase.
@@ -241,3 +253,12 @@ class QitMaNotification(models.Model):
     class Meta:
         managed = False
         db_table = 'QIT_MA_Notification'
+
+class QitLocation(models.Model):
+    transid = models.AutoField(db_column='TransID', primary_key=True)  # Field name made lowercase.
+    locationname = models.CharField(db_column='LocationName', unique=True, max_length=500)  # Field name made lowercase.
+    cmptransid = models.ForeignKey(QitCompany, models.DO_NOTHING, db_column='CmpTransID')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'QIT_Location'

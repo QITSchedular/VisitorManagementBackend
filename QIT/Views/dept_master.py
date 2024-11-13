@@ -82,7 +82,8 @@ def SaveDepartment(request):
                 'is_save': "Y",
                 'Status': 200,
                 'StatusMsg': "Department data saved",
-                'APICode':APICodeClass.Department_Add.value
+                'APICode':APICodeClass.Department_Add.value,
+                "deptId": res.transid
             })
         else:
             return Response({

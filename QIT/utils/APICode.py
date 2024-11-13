@@ -59,6 +59,11 @@ class APICodeClass(Enum):
     Master_Admin_CmpList = 1104
     Master_Admin_CmpStatus = 1105
 
+    Location_Add = 1201
+    Location_Get = 1202
+    Location_Edit = 1203
+    Location_Delete = 1204
+
 
 class APICodeMessages:
     messages = {
@@ -111,7 +116,12 @@ class APICodeMessages:
         APICodeClass.Auth_GenerateNewPWD_Cmp: "Error in generating new company password.",
         APICodeClass.Auth_VerifyForgetPWD_OTP: "Error in verifying OTP for password recovery.",
         APICodeClass.Auth_ForgetPWD_User: "Error in user password recovery.",
-        APICodeClass.Auth_RefreshToken: "Error in refreshing token."
+        APICodeClass.Auth_RefreshToken: "Error in refreshing token.",
+        
+        APICodeClass.Location_Add: "Error in adding location.",
+        APICodeClass.Location_Get: "Error in getting location.",
+        APICodeClass.Location_Edit: "Error in editing location.",
+        APICodeClass.Location_Delete: "Error in deleting location.",
     }
     
     @staticmethod

@@ -1,4 +1,4 @@
-from QIT.serializers import GenerateOTPSerializer,UserSerializer,GetConfigDataSerializer
+from QIT.serializers import GenerateOTPSerializer,UserSerializer,GetConfigDataSerializer,GetConfigHostSerializer
 from rest_framework.decorators import api_view,authentication_classes
 from .emails import Send_OTP
 from .send_email import send_html_mail
@@ -1059,6 +1059,8 @@ def saveCmpConfig(request):
         cmpEntry.manualverification = manualVeri
         cmpEntry.approvalduration = reqData["ApprovalTime"].upper()
         cmpEntry.messagetype = reqData["SMSType"]
+        cmpEntry.hostname = reqData["hostname"]
+        cmpEntry.hostpasscode = reqData["hostpasscode"]
         cmpEntry.save()
         return Response({
             'Status': 200,
@@ -1078,4 +1080,11 @@ def saveCmpConfig(request):
             'APICode':APICodeClass.Config_Get.value
         },status=400)  
 
+def get_host_credentials(cmptransid):
+    try:
+        config = QitConfigmaster.objects.get(cmptransid=cmptransid)
+        serializer = GetConfigHostSerializer(config)
+        return serializer.data
+    except QitConfigmaster.DoesNotExist:
+        return None
     

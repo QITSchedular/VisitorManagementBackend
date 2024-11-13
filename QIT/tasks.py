@@ -114,15 +114,15 @@ def reminder_notification():
                         "We look forward to your visit!"
                     )
                     subject = f"Reminder: Your Upcoming Visit to {companyEntry.bname}"
-                    send_html_mail(subject, message1,[visitors_to_remind.visitortansid.e_mail])
+                    send_html_mail(subject, message1,[visitors_to_remind.visitortansid.e_mail],cmpid)
                     
                     message2 =  send_reminder_user(visitor_dict,f"This is a reminder that you have a scheduled visitor coming to meet you on {dt.strftime('%d %B %Y')} at {dt.strftime('%I:%M %p')}. Here are the details:",companyEntry.e_mail,companyEntry.bname,"The visitor has been informed and will receive instructions to check in using the QR code provided.",f"Thank you for your cooperation.")
-                    send_html_mail(f"Reminder: Visitor Arrival",message2,emails)
+                    send_html_mail(f"Reminder: Visitor Arrival",message2,emails,cmpid)
                 if visitors_to_remind.status == "P":
                     print("-------->2",emails)
                     print("-------->visitors_to_remind.status",visitors_to_remind.status)
                     message2 =  send_reminder_user(visitor_dict,f"A visitor has registered to meet you at {companyEntry.bname} Your approval is required to confirm the visit. Please review the details below and provide your approval at your earliest convenience.",companyEntry.e_mail,companyEntry.bname,"Upon your approval, the visitor will be notified to enter the premises. Thank you for your prompt attention to this matter.",f"To verify and approve the visitor, please click the following link: <a href={verifyLink} class='button'>Check Status</a>")
-                    send_html_mail(f"Reminder: Visitor Registration",message2,emails)
+                    send_html_mail(f"Reminder: Visitor Registration",message2,emails,cmpid)
             # else:
             #     print("No visitors found matching the update criteria.")
     except Exception as e:

@@ -873,8 +873,8 @@ def send_email_notification_email(visitor,departmentId,cmpid):
         message1 =  send_reminder(visitor,f"Thank you for registering to visit {companyEntry.bname} Your visit details are as follows:",companyEntry.e_mail,companyEntry.bname,"Your registration is currently pending approval",f"You can check the status of your registration by clicking the following link: <a href={statusLink} class='button'>Check Status</a>",f"Please wait for the approval. If you have any questions or need further information, please do not hesitate to contact us at {companyEntry.e_mail}")
         message2 =  send_reminder_user(visitor,f"A visitor has registered to meet you at {companyEntry.bname} Your approval is required to confirm the visit. Please review the details below and provide your approval at your earliest convenience.",companyEntry.e_mail,companyEntry.bname,"Upon your approval, the visitor will be notified to enter the premises. Thank you for your prompt attention to this matter.",f"To verify and approve the visitor, please click the following link: <a href={verifyLink} class='button'>Check Status</a>")
         # print("emails : ==> ",emails)
-        send_html_mail(f"Visitor Registration",message2,emails)
-        send_html_mail(f"Visitor Registration Received",message1,[visitor['vEmail']])
+        send_html_mail(f"Visitor Registration",message2,emails,cmpid)
+        send_html_mail(f"Visitor Registration Received",message1,[visitor['vEmail']],cmpid)
         # return Response({'Status': 200, 'StatusMsg': "Send successfullyy",'APICode':APICodeClass.Visitor_Mobile_ChkOutByV.value}, status=200)
     except Exception as e:
         print("Error : ",str(e))

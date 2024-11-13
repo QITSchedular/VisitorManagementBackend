@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from QIT.Views import common,company_master,dept_master,user_master,authorization_master,visitor_master,notification_master,reports,log, test_send_mail,master_admin
+from QIT.Views import common,company_master,dept_master,user_master,authorization_master,visitor_master,notification_master,reports,log, test_send_mail,master_admin, location_master
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 
@@ -84,4 +84,8 @@ urlpatterns = [
     path('VMS/SuperAdmin/Save', master_admin.saveMasterAdminDetails),
     path('VMS/SuperAdmin/Get/<int:cid>', master_admin.GetComapnyDataById),
     path('VMS/SuperAdmin/Edit', master_admin.EditMAComapnyDataById),
+    path("VMS/Location/Save", location_master.SaveLocation),
+    path("VMS/Location/GetByCid/<int:cid>", location_master.GetAllLocationByCId),
+    path("VMS/Location/Update", location_master.EditLocation),
+    path("VMS/Location/Delete/<int:did>/<int:cid>", location_master.DeleteLocation),
 ]
