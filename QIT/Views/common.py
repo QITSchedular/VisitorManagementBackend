@@ -75,6 +75,7 @@ def GenerateOTP(request):
         email = request.data["e_mail"]
         role = request.data["role"]
         if role.upper() != "COMPANY":
+            cmpid = request.data["cmpid"]
             mobile = request.data["mobile"]
         if not email:
             return Response({
@@ -127,7 +128,10 @@ def GenerateOTP(request):
         set_otp(email,new_OTP,role.upper())
         message1 =  email_template(email,message,new_OTP)
         # Send_OTP(email,f"OTP (One Time Password)",message1)
-        send_html_mail(f"OTP (One Time Password)",message1,[email])
+        if role.upper() != "COMPANY":
+            send_html_mail(f"OTP (One Time Password)",message1,[email],cmpid)
+        else:
+            send_html_mail(f"OTP (One Time Password)",message1,[email])
         if role.upper() != "COMPANY":
             sendSMS(new_OTP,mobile)
         return Response({
