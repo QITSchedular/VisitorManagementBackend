@@ -99,7 +99,7 @@ def EditLocation(request):
         reqData = request.data
         if not reqData.get("transid"):
             raise NotFound(detail="transid is required",code=400)
-        if not reqData.get("loc_name"):
+        if not reqData.get("locationname"):
             raise NotFound(detail="location name is required",code=400)
         if not reqData.get("cmptransid"):
             raise NotFound(detail="cmptransid is required",code=400)
@@ -114,7 +114,7 @@ def EditLocation(request):
             })
         
         # Check if the location with the same name already exists for the given company (case-insensitive)
-        existing_loc = QitLocation.objects.filter(cmptransid=reqData["cmptransid"], locationname__iexact=reqData["loc_name"]).first()
+        existing_loc = QitLocation.objects.filter(cmptransid=reqData["cmptransid"], locationname__iexact=reqData["locationname"]).first()
         if existing_loc:
             return Response({
                 'is_save': "N",
@@ -127,6 +127,7 @@ def EditLocation(request):
         if not locData:
             raise NotFound(detail="Location data not found",code=400)
         serialized_data = LocationSerializer(locData, data=reqData, partial=True)
+        print(serialized_data)
         if serialized_data.is_valid():
             serialized_data.save()
         return Response({

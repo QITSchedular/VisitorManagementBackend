@@ -26,10 +26,23 @@ class CompanyMasterSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
 
+# class CompanyMasterGetSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = QitCompany
+#         fields = ['transid','e_mail', 'password', 'bname', 'blocation','qrstring','status','entrydate']
+
 class CompanyMasterGetSerializer(serializers.ModelSerializer):
+    isidentity = serializers.SerializerMethodField()
+
     class Meta:
         model = QitCompany
-        fields = ['transid','e_mail', 'password', 'bname', 'blocation','qrstring','status','entrydate']
+        fields = ['transid','e_mail', 'bname', 'blocation','qrstring','status','entrydate', 'isidentity']
+
+    def get_isidentity(self, obj):
+        # Fetch the related QitConfigmaster entry based on the company
+        config = QitConfigmaster.objects.filter(cmptransid=obj).first()  # Assuming 'cmptransid' links to QitCompany
+        return config.isidentity if config else None
+
 
 class CompanyMasterDetailsGetSerializer(serializers.ModelSerializer):
     class Meta:
@@ -185,7 +198,7 @@ class QitVisitorinoutPOSTSerializer(serializers.ModelSerializer):
             'vavatar', 'cnctperson', 'cmpdepartmentid', 'timeslot', 'anyhardware',
             'purposeofvisit', 'cmptransid', 'reason', 'checkintime', 'checkouttime',
             'createdby', 'vname', 'phone1', 'vcmpname', 
-            'vlocation', 'e_mail'
+            'vlocation', 'e_mail','visitoridentityid','locationtransid'
         ]
         # fields = '__all__'
 
@@ -347,7 +360,7 @@ class UserShortDataSerializer(serializers.ModelSerializer):
 class GetConfigDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = QitConfigmaster
-        fields = ['transid','approvalduration','manualverification','messagetype','hostname','hostpasscode']
+        fields = ['transid','approvalduration','manualverification','messagetype','hostname','hostpasscode','isidentity']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

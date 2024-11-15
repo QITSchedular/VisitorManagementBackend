@@ -312,29 +312,64 @@ def CreateCompany(request):
         },status=400)  
 
 
+# @csrf_exempt
+# @api_view(["GET"])
+# def GetComapnyData(request,qrCode):
+#     try:
+#         resDB = QitCompany.objects.filter(qrstring = qrCode)
+#         serializer = CompanyMasterGetSerializer(resDB,many=True)
+#         if resDB:
+#             return Response({
+#                 'Data':serializer.data,
+#                 'APICode':APICodeClass.Company_GetByQR.value
+#             })
+#         else:
+#             return Response({
+#                 'Status':400,
+#                 'StatusMsg':"Invalid QR Code",
+#                 'APICode':APICodeClass.Company_GetByQR.value
+#             },status=400)
+#     except Exception as e:
+#         return Response({
+#             'Status':400,
+#             'StatusMsg':str(e),
+#             'APICode':APICodeClass.Company_GetByQR.value
+#         },status=400)
+
+
 @csrf_exempt
 @api_view(["GET"])
-def GetComapnyData(request,qrCode):
+def GetComapnyData(request, qrCode):
     try:
-        resDB = QitCompany.objects.filter(qrstring = qrCode)
-        serializer = CompanyMasterGetSerializer(resDB,many=True)
-        if resDB:
+        # Fetch the company data based on the provided QR code
+        resDB = QitCompany.objects.filter(qrstring=qrCode)
+
+        # Check if any data was found
+        if resDB.exists():
+            # Serialize the data
+            serializer = CompanyMasterGetSerializer(resDB, many=True)
+            
+            # Return the serialized data as a response
             return Response({
-                'Data':serializer.data,
-                'APICode':APICodeClass.Company_GetByQR.value
+                'Data': serializer.data,
+                'APICode': APICodeClass.Company_GetByQR.value
             })
         else:
+            # Return an error response if no data is found
             return Response({
-                'Status':400,
-                'StatusMsg':"Invalid QR Code",
-                'APICode':APICodeClass.Company_GetByQR.value
-            },status=400)
+                'Status': 400,
+                'StatusMsg': "Invalid QR Code",
+                'APICode': APICodeClass.Company_GetByQR.value
+            }, status=400)
+
     except Exception as e:
+        # Return a general error response in case of exceptions
         return Response({
-            'Status':400,
-            'StatusMsg':str(e),
-            'APICode':APICodeClass.Company_GetByQR.value
-        },status=400)
+            'Status': 400,
+            'StatusMsg': str(e),
+            'APICode': APICodeClass.Company_GetByQR.value
+        }, status=400)
+
 
 @csrf_exempt
 @api_view(["GET"])

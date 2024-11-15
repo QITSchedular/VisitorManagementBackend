@@ -1055,12 +1055,19 @@ def saveCmpConfig(request):
                 'StatusMsg': "Invalid ApprovalTime value",
                 'APICode':APICodeClass.Config_Get.value
             },status=400)
+        if reqData["isidentity"].upper() != "N" and reqData["isidentity"].upper() != "Y":
+            return Response({
+                'Status': 400,
+                'StatusMsg': "Invalid PAN/Aadhar required value",
+                'APICode':APICodeClass.Config_Get.value
+            },status=400)
         cmpEntry = QitConfigmaster.objects.get(transid=reqData["id"],cmptransid=reqData["company_id"])
         cmpEntry.manualverification = manualVeri
         cmpEntry.approvalduration = reqData["ApprovalTime"].upper()
         cmpEntry.messagetype = reqData["SMSType"]
         cmpEntry.hostname = reqData["hostname"]
         cmpEntry.hostpasscode = reqData["hostpasscode"]
+        cmpEntry.isidentity = reqData["isidentity"]
         cmpEntry.save()
         return Response({
             'Status': 200,
