@@ -833,8 +833,8 @@ def send_email_notification(request):
                 message1 =  send_reminder(visitor_dict,"Visiting company reminder",statusLink,"To ensure a smooth check-in process, please click here","CheckIn")
                 message2 =  send_reminder(visitor_dict,"Visitor arrival reminder",verifyLink,"To verify a visitor, please click here","verify now")
                 # print("emails : ==> ",emails)
-                send_html_mail(f"reminder",message2,emails)
-                send_html_mail(f"reminder",message1,[visitors_to_remind.visitortansid.e_mail])
+                send_html_mail(f"reminder",message2,emails,cmpid)
+                send_html_mail(f"reminder",message1,[visitors_to_remind.visitortansid.e_mail],cmpid)
                 return Response({'Status': 200, 'StatusMsg': "Send successfullyy",'APICode':APICodeClass.Visitor_Mobile_ChkOutByV.value}, status=200)
             else:
                 return Response({'Status': 400, 'StatusMsg': "An error occurred: No visitors found matching the update criteria.",'APICode':APICodeClass.Visitor_Mobile_ChkOutByV.value}, status=400)
@@ -916,8 +916,8 @@ def send_email_notification_email_edited(visitor,departmentId,cmpid):
         message1 =  send_reminder(visitor,f"Thank you for registering again to visit {companyEntry.bname} Your visit details are as follows:",companyEntry.e_mail,companyEntry.bname,"Your registration is currently pending approval",f"You can check the status of your registration by clicking the following link: <a href={statusLink} class='button'>Check Status</a>",f"Please wait for the approval. If you have any questions or need further information, please do not hesitate to contact us at {companyEntry.e_mail}")
         message2 =  send_reminder_user(visitor,f"A visitor has registered again to meet you at {companyEntry.bname} Your approval is required to confirm the visit. Please review the details below and provide your approval at your earliest convenience.",companyEntry.e_mail,companyEntry.bname,"Upon your approval, the visitor will be notified to enter the premises. Thank you for your prompt attention to this matter.",f"To verify and approve the visitor, please click the following link: <a href={verifyLink} class='button'>Check Status</a>")
         # print("emails : ==> ",emails)
-        send_html_mail(f"Visitor Register again",message2,emails)
-        send_html_mail(f"Visitor Registration Received",message1,[visitor['vEmail']])
+        send_html_mail(f"Visitor Register again",message2,emails,cmpid)
+        send_html_mail(f"Visitor Registration Received",message1,[visitor['vEmail']],cmpid)
         # return Response({'Status': 200, 'StatusMsg': "Send successfullyy",'APICode':APICodeClass.Visitor_Mobile_ChkOutByV.value}, status=200)
     except Exception as e:
         print("Error : ",str(e))
@@ -1014,8 +1014,8 @@ def send_email_notification_Verification(inoutentry, cmpid, state, createdby):
                 )
             subject = f"Approval of Your Visit to {companyEntry.bname} on {dt.strftime('%d %B %Y')} at {dt.strftime('%I:%M %p')}"
             subject1 = f"Approval of Visitor to meet you on {dt.strftime('%d %B %Y')} at {dt.strftime('%I:%M %p')}"
-            send_html_mail(subject, message1, [VisitorEntry.e_mail])
-            send_html_mail(subject1, message2, emails)
+            send_html_mail(subject, message1, [VisitorEntry.e_mail],cmpid)
+            send_html_mail(subject1, message2, emails,cmpid)
         elif state == "R":
             message1 = send_reminder_visitor_reject(
                 visitor_dict,
@@ -1027,7 +1027,7 @@ def send_email_notification_Verification(inoutentry, cmpid, state, createdby):
                 "Thank you for your understanding."
             )
             subject = f"Your Visit to {companyEntry.bname} Has Not Been Approved"
-            send_html_mail(subject, message1, [VisitorEntry.e_mail])
+            send_html_mail(subject, message1, [VisitorEntry.e_mail],cmpid)
     except Exception as e:
         print("Error : ", e)
 
@@ -1064,6 +1064,6 @@ def send_email_checkin_notification_user(inoutentry, cmpid):
                 emails.append(data.e_mail)
         
         subject1 = f"{VisitorEntry.vname} has checked-in to meet you"
-        send_html_mail(subject1, message2, emails)
+        send_html_mail(subject1, message2, emails,cmpid)
     except Exception as e:
         print("Error : ", e)
